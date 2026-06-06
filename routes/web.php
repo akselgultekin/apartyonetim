@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +17,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->n
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/calendar', [AdminController::class, 'calendar'])->name('calendar');
+    Route::get('/account', [AccountController::class, 'edit'])->name('account.edit');
+    Route::post('/account', [AccountController::class, 'update'])->name('account.update');
 
     Route::middleware('role:manager')->group(function () {
         Route::get('/locations', [AdminController::class, 'locations'])->name('locations.index');
@@ -41,9 +44,11 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/incomes', [AdminController::class, 'incomes'])->name('incomes.index');
         Route::post('/incomes', [AdminController::class, 'storeIncome'])->name('incomes.store');
+        Route::post('/incomes/{income}', [AdminController::class, 'updateIncome'])->name('incomes.update');
 
         Route::get('/expenses', [AdminController::class, 'expenses'])->name('expenses.index');
         Route::post('/expenses', [AdminController::class, 'storeExpense'])->name('expenses.store');
+        Route::post('/expenses/{expense}', [AdminController::class, 'updateExpense'])->name('expenses.update');
 
         Route::get('/subscriptions', [AdminController::class, 'subscriptions'])->name('subscriptions.index');
         Route::post('/subscriptions', [AdminController::class, 'storeSubscription'])->name('subscriptions.store');

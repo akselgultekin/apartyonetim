@@ -33,6 +33,7 @@
                     ['reports', 'reports', 'BarChart3', 'Raporlar'],
                     ['subscriptions.index', 'subscriptions.*', 'ReceiptText', 'Abonelikler'],
                     ['maintenance.index', 'maintenance.*', 'Wrench', 'Temizlik/Bakim'],
+                    ['account.edit', 'account.*', 'UserCog', 'Hesap'],
                 ];
             @endphp
             @foreach($items as [$route, $pattern, $icon, $label])

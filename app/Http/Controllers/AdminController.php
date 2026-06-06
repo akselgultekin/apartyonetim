@@ -197,6 +197,14 @@ class AdminController extends Controller
         return back()->with('status', 'Gelir kaydedildi.');
     }
 
+    public function updateIncome(Request $request, Income $income): RedirectResponse
+    {
+        $income->update($this->validateIncome($request));
+        $this->log('Gelir guncellendi', $income->title);
+
+        return redirect()->route('incomes.index')->with('status', 'Gelir guncellendi.');
+    }
+
     public function expenses(Request $request): View
     {
         return view('finance.expenses', $this->financeViewData($request, Expense::class, 'expenses'));
@@ -208,6 +216,14 @@ class AdminController extends Controller
         $this->log('Gider eklendi', $expense->title);
 
         return back()->with('status', 'Gider kaydedildi.');
+    }
+
+    public function updateExpense(Request $request, Expense $expense): RedirectResponse
+    {
+        $expense->update($this->validateExpense($request));
+        $this->log('Gider guncellendi', $expense->title);
+
+        return redirect()->route('expenses.index')->with('status', 'Gider guncellendi.');
     }
 
     public function subscriptions(Request $request): View
@@ -401,6 +417,7 @@ class AdminController extends Controller
     {
         return [
             $key => $model::with(['location', 'room', 'customer'])->filter($request)->latest()->paginate(12),
+            'editing' => $request->filled('edit') ? $model::find($request->integer('edit')) : null,
             'locations' => Location::active()->orderBy('name')->get(),
             'rooms' => Room::active()->orderBy('name')->get(),
             'customers' => Customer::active()->orderBy('full_name')->get(),
