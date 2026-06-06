@@ -1,0 +1,29 @@
+<x-layouts.app heading="Musteriler" subheading="Kimlik, iletisim ve konaklama gecmisi">
+    <x-filter-bar>
+        <input name="q" value="{{ request('q') }}" placeholder="Ad, telefon, TC/pasaport" class="h-10 rounded-md border border-slate-300 px-3 text-sm md:col-span-2">
+        <select name="status" class="h-10 rounded-md border border-slate-300 px-3 text-sm"><option value="">Tum durumlar</option><option value="active" @selected(request('status')==='active')>Aktif</option><option value="passive" @selected(request('status')==='passive')>Pasif</option></select>
+    </x-filter-bar>
+    <div class="grid gap-5 xl:grid-cols-[.8fr_1.2fr]">
+        <form method="post" action="{{ $editing ? route('customers.update', $editing) : route('customers.store') }}" class="rounded-md border border-slate-200 bg-white p-5">
+            @csrf
+            <h2 class="mb-4 font-semibold">{{ $editing ? 'Musteri duzenle' : 'Yeni musteri' }}</h2>
+            <div class="grid gap-4">
+                <x-input name="full_name" label="Ad soyad" :value="$editing?->full_name" />
+                <x-input name="phone" label="Telefon" :value="$editing?->phone" />
+                <x-input name="identity_number" label="TC / pasaport" :value="$editing?->identity_number" />
+                <x-input name="email" label="E-posta" type="email" :value="$editing?->email" />
+                <x-select name="is_active" label="Durum"><option value="1" @selected(old('is_active', $editing?->is_active ?? 1)==1)>Aktif</option><option value="0" @selected(old('is_active', $editing?->is_active)==0)>Pasif</option></x-select>
+                <x-textarea name="address" label="Adres" :value="$editing?->address" />
+                <x-textarea name="notes" label="Notlar" :value="$editing?->notes" />
+                <button class="h-10 rounded-md bg-slate-900 text-sm font-semibold text-white">Kaydet</button>
+            </div>
+        </form>
+        <section class="overflow-hidden rounded-md border border-slate-200 bg-white">
+            <table class="w-full text-left text-sm">
+                <thead class="bg-slate-100 text-slate-600"><tr><th class="p-3">Musteri</th><th class="p-3">Kimlik</th><th class="p-3">Durum</th><th class="p-3"></th></tr></thead>
+                <tbody>@foreach($customers as $customer)<tr class="border-t border-slate-100"><td class="p-3"><strong>{{ $customer->full_name }}</strong><div class="text-slate-500">{{ $customer->phone }} {{ $customer->email }}</div></td><td class="p-3">{{ $customer->identity_number }}</td><td class="p-3">{{ $customer->is_active ? 'Aktif' : 'Pasif' }}</td><td class="p-3 text-right"><a class="font-medium text-slate-700" href="{{ route('customers.index', ['edit' => $customer->id]) }}">Duzenle</a></td></tr>@endforeach</tbody>
+            </table>
+            <div class="p-3">{{ $customers->links() }}</div>
+        </section>
+    </div>
+</x-layouts.app>
