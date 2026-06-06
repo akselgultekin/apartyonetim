@@ -38,10 +38,8 @@ class AdminController extends Controller
             'unpaidRent' => Income::whereIn('payment_status', ['unpaid', 'partial'])->sum(DB::raw('amount - paid_amount')),
             'periods' => $periods,
             'locationOccupancy' => $this->locationOccupancy(),
-            'topRooms' => Room::query()
-                ->leftJoin('incomes', 'rooms.id', '=', 'incomes.room_id')
-                ->select('rooms.*', DB::raw('COALESCE(SUM(incomes.paid_amount),0) as revenue'))
-                ->groupBy('rooms.id')
+            'topRooms' => Room::with('location')
+                ->withSum('incomes as revenue', 'paid_amount')
                 ->orderByDesc('revenue')
                 ->limit(5)
                 ->get(),
