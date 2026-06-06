@@ -1,12 +1,12 @@
-<x-layouts.app heading="Musteriler" subheading="Kimlik, iletisim ve konaklama gecmisi">
+<x-layouts.app heading="Müşteriler" subheading="Kimlik, iletişim ve konaklama geçmişi">
     <x-filter-bar>
         <input name="q" value="{{ request('q') }}" placeholder="Ad, telefon, TC/pasaport" class="h-10 rounded-md border border-slate-300 px-3 text-sm md:col-span-2">
-        <select name="status" class="h-10 rounded-md border border-slate-300 px-3 text-sm"><option value="">Tum durumlar</option><option value="active" @selected(request('status')==='active')>Aktif</option><option value="passive" @selected(request('status')==='passive')>Pasif</option></select>
+        <select name="status" class="h-10 rounded-md border border-slate-300 px-3 text-sm"><option value="">Tüm durumlar</option><option value="active" @selected(request('status')==='active')>Aktif</option><option value="passive" @selected(request('status')==='passive')>Pasif</option></select>
     </x-filter-bar>
     <div class="grid gap-5 xl:grid-cols-[.8fr_1.2fr]">
         <form method="post" action="{{ $editing ? route('customers.update', $editing) : route('customers.store') }}" class="rounded-md border border-slate-200 bg-white p-5">
             @csrf
-            <h2 class="mb-4 font-semibold">{{ $editing ? 'Musteri duzenle' : 'Yeni musteri' }}</h2>
+            <h2 class="mb-4 font-semibold">{{ $editing ? 'Müşteri düzenle' : 'Yeni müşteri' }}</h2>
             <div class="grid gap-4">
                 <x-input name="full_name" label="Ad soyad" :value="$editing?->full_name" />
                 <x-input name="phone" label="Telefon" :value="$editing?->phone" />
@@ -20,8 +20,8 @@
         </form>
         <section class="overflow-hidden rounded-md border border-slate-200 bg-white">
             <table class="w-full text-left text-sm">
-                <thead class="bg-slate-100 text-slate-600"><tr><th class="p-3">Musteri</th><th class="p-3">Kimlik</th><th class="p-3">Durum</th><th class="p-3"></th></tr></thead>
-                <tbody>@foreach($customers as $customer)<tr class="border-t border-slate-100"><td class="p-3"><strong>{{ $customer->full_name }}</strong><div class="text-slate-500">{{ $customer->phone }} {{ $customer->email }}</div></td><td class="p-3">{{ $customer->identity_number }}</td><td class="p-3">{{ $customer->is_active ? 'Aktif' : 'Pasif' }}</td><td class="p-3 text-right"><a class="font-medium text-slate-700" href="{{ route('customers.index', ['edit' => $customer->id]) }}">Duzenle</a></td></tr>@endforeach</tbody>
+                <thead class="bg-slate-100 text-slate-600"><tr><th class="p-3">Müşteri</th><th class="p-3">Kimlik</th><th class="p-3">Durum</th><th class="p-3"></th></tr></thead>
+                <tbody>@foreach($customers as $customer)<tr class="border-t border-slate-100"><td class="p-3"><strong>{{ $customer->full_name }}</strong><div class="text-slate-500">{{ $customer->phone }} {{ $customer->email }}</div></td><td class="p-3">{{ $customer->identity_number }}</td><td class="p-3">{{ $customer->is_active ? 'Aktif' : 'Pasif' }}</td><td class="p-3 text-right"><a class="font-medium text-slate-700" href="{{ route('customers.index', ['edit' => $customer->id]) }}">Düzenle</a></td></tr>@endforeach</tbody>
             </table>
             <div class="p-3">{{ $customers->links() }}</div>
         </section>

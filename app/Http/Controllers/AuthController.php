@@ -27,7 +27,7 @@ class AuthController extends Controller
             return redirect()->intended(route('dashboard'));
         }
 
-        return back()->withErrors(['email' => 'E-posta veya sifre hatali.'])->onlyInput('email');
+        return back()->withErrors(['email' => 'E-posta veya şifre hatalı.'])->onlyInput('email');
     }
 
     public function logout(Request $request): RedirectResponse

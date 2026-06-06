@@ -17,7 +17,7 @@
         </div>
         @if($icon)
             <div class="grid h-10 w-10 shrink-0 place-items-center rounded-md {{ $iconTone }}">
-                <i data-lucide="{{ $icon }}" class="h-5 w-5"></i>
+                <i class="fa-solid {{ $icon }}"></i>
             </div>
         @endif
     </div>

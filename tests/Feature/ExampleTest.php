@@ -15,6 +15,6 @@ class ExampleTest extends TestCase
         $response = $this->get('/');
 
         $response->assertRedirect('/dashboard');
-        $this->followRedirects($response)->assertSee('Panele giris');
+        $this->followRedirects($response)->assertSee('Panele giriş');
     }
 }

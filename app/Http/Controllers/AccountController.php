@@ -35,6 +35,6 @@ class AccountController extends Controller
 
         $user->save();
 
-        return back()->with('status', 'Hesap bilgileri guncellendi.');
+        return back()->with('status', 'Hesap bilgileri güncellendi.');
     }
 }

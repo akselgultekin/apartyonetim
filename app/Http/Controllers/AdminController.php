@@ -68,9 +68,9 @@ class AdminController extends Controller
     public function updateLocation(Request $request, Location $location): RedirectResponse
     {
         $location->update($this->validateLocation($request));
-        $this->log('Lokasyon guncellendi', $location->name);
+        $this->log('Lokasyon güncellendi', $location->name);
 
-        return redirect()->route('locations.index')->with('status', 'Lokasyon guncellendi.');
+        return redirect()->route('locations.index')->with('status', 'Lokasyon güncellendi.');
     }
 
     public function rooms(Request $request): View
@@ -93,9 +93,9 @@ class AdminController extends Controller
     public function updateRoom(Request $request, Room $room): RedirectResponse
     {
         $room->update($this->validateRoom($request));
-        $this->log('Oda guncellendi', $room->name);
+        $this->log('Oda güncellendi', $room->name);
 
-        return redirect()->route('rooms.index')->with('status', 'Oda/daire guncellendi.');
+        return redirect()->route('rooms.index')->with('status', 'Oda/daire güncellendi.');
     }
 
     public function customers(Request $request): View
@@ -109,17 +109,17 @@ class AdminController extends Controller
     public function storeCustomer(Request $request): RedirectResponse
     {
         $customer = Customer::create($this->validateCustomer($request));
-        $this->log('Musteri eklendi', $customer->full_name);
+        $this->log('Müşteri eklendi', $customer->full_name);
 
-        return back()->with('status', 'Musteri kaydedildi.');
+        return back()->with('status', 'Müşteri kaydedildi.');
     }
 
     public function updateCustomer(Request $request, Customer $customer): RedirectResponse
     {
         $customer->update($this->validateCustomer($request));
-        $this->log('Musteri guncellendi', $customer->full_name);
+        $this->log('Müşteri güncellendi', $customer->full_name);
 
-        return redirect()->route('customers.index')->with('status', 'Musteri guncellendi.');
+        return redirect()->route('customers.index')->with('status', 'Müşteri güncellendi.');
     }
 
     public function stays(Request $request): View
@@ -150,7 +150,7 @@ class AdminController extends Controller
             ->exists();
 
         if ($overlap) {
-            return back()->withErrors(['check_in' => 'Bu oda secilen tarih araliginda zaten dolu veya rezerve.'])->withInput();
+            return back()->withErrors(['check_in' => 'Bu oda seçilen tarih aralığında zaten dolu veya rezerve.'])->withInput();
         }
 
         $stay = Stay::create($data);
@@ -167,21 +167,21 @@ class AdminController extends Controller
             'location_id' => $stay->room->location_id,
             'room_id' => $stay->room_id,
             'customer_id' => $stay->customer_id,
-            'notes' => 'Konaklama kaydindan otomatik olustu.',
+            'notes' => 'Konaklama kaydından otomatik oluştu.',
         ]);
 
         $this->log('Konaklama eklendi', $stay->customer->full_name.' / '.$stay->room->name);
 
-        return back()->with('status', 'Giris/cikis kaydi olusturuldu.');
+        return back()->with('status', 'Giriş/çıkış kaydı oluşturuldu.');
     }
 
     public function checkoutStay(Stay $stay): RedirectResponse
     {
         $stay->update(['checked_out_at' => now()]);
         $stay->room->update(['status' => 'maintenance', 'cleaning_status' => 'waiting']);
-        $this->log('Cikis tamamlandi', $stay->customer->full_name.' / '.$stay->room->name);
+        $this->log('Çıkış tamamlandı', $stay->customer->full_name.' / '.$stay->room->name);
 
-        return back()->with('status', 'Cikis yapildi, oda temizlik bekliyor durumuna alindi.');
+        return back()->with('status', 'Çıkış yapıldı, oda temizlik bekliyor durumuna alındı.');
     }
 
     public function incomes(Request $request): View
@@ -200,9 +200,9 @@ class AdminController extends Controller
     public function updateIncome(Request $request, Income $income): RedirectResponse
     {
         $income->update($this->validateIncome($request));
-        $this->log('Gelir guncellendi', $income->title);
+        $this->log('Gelir güncellendi', $income->title);
 
-        return redirect()->route('incomes.index')->with('status', 'Gelir guncellendi.');
+        return redirect()->route('incomes.index')->with('status', 'Gelir güncellendi.');
     }
 
     public function expenses(Request $request): View
@@ -221,9 +221,9 @@ class AdminController extends Controller
     public function updateExpense(Request $request, Expense $expense): RedirectResponse
     {
         $expense->update($this->validateExpense($request));
-        $this->log('Gider guncellendi', $expense->title);
+        $this->log('Gider güncellendi', $expense->title);
 
-        return redirect()->route('expenses.index')->with('status', 'Gider guncellendi.');
+        return redirect()->route('expenses.index')->with('status', 'Gider güncellendi.');
     }
 
     public function subscriptions(Request $request): View
@@ -258,7 +258,7 @@ class AdminController extends Controller
                 'payment_status' => 'unpaid',
                 'location_id' => $subscription->location_id,
                 'room_id' => $subscription->room_id,
-                'notes' => 'Abonelik kaydindan otomatik olustu.',
+                'notes' => 'Abonelik kaydından otomatik oluştu.',
             ]);
         }
 
@@ -288,9 +288,9 @@ class AdminController extends Controller
         $roomStatus = $log->type === 'repair' && $log->status !== 'done' ? 'maintenance' : 'available';
         $cleaning = $log->type === 'cleaning' && $log->status === 'done' ? 'clean' : $log->room->cleaning_status;
         $log->room->update(['status' => $roomStatus, 'cleaning_status' => $cleaning]);
-        $this->log('Bakim/temizlik kaydi', $log->title);
+        $this->log('Bakım/temizlik kaydı', $log->title);
 
-        return back()->with('status', 'Bakim/temizlik kaydi olusturuldu.');
+        return back()->with('status', 'Bakım/temizlik kaydı oluşturuldu.');
     }
 
     public function calendar(Request $request): View
@@ -325,7 +325,7 @@ class AdminController extends Controller
         $start = Carbon::parse($request->input('start', now()->startOfMonth()))->startOfDay();
         $end = Carbon::parse($request->input('end', now()->endOfMonth()))->endOfDay();
         $rows = $this->profitRows($start, $end, 'location');
-        $csv = "Baslik,Gelir,Gider,Net\n";
+        $csv = "Başlık,Gelir,Gider,Net\n";
 
         foreach ($rows as $row) {
             $csv .= sprintf("\"%s\",%.2f,%.2f,%.2f\n", str_replace('"', '""', $row['name']), $row['income'], $row['expense'], $row['net']);

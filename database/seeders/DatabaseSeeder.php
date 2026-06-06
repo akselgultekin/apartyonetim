@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
         $center = Location::create([
             'name' => 'Merkez Apart',
             'address' => 'Ataturk Cd. No: 12',
-            'description' => 'Gunluk ve aylik kiralamalarin ana lokasyonu.',
+            'description' => 'Günlük ve aylık kiralamaların ana lokasyonu.',
             'is_active' => true,
         ]);
 
@@ -97,11 +97,11 @@ class DatabaseSeeder extends Seeder
         Income::create(['title' => 'Depozito', 'type' => 'deposit', 'amount' => 8000, 'paid_amount' => 8000, 'date' => now()->subDays(5), 'payment_method' => 'bank_transfer', 'payment_status' => 'paid', 'location_id' => $sea->id, 'room_id' => $rooms[3]->id, 'customer_id' => $customers[1]->id]);
         Expense::create(['title' => 'Elektrik faturasi', 'category' => 'electricity', 'amount' => 6200, 'date' => now()->subDays(4), 'payment_status' => 'paid', 'location_id' => $center->id]);
         Expense::create(['title' => 'Temizlik personeli', 'category' => 'cleaning', 'amount' => 3500, 'date' => now()->subDay(), 'payment_status' => 'paid', 'location_id' => $sea->id]);
-        Expense::create(['title' => 'Internet faturasi', 'category' => 'internet', 'amount' => 1250, 'date' => now()->addDays(6), 'payment_status' => 'unpaid', 'location_id' => $center->id]);
+        Expense::create(['title' => 'İnternet faturası', 'category' => 'internet', 'amount' => 1250, 'date' => now()->addDays(6), 'payment_status' => 'unpaid', 'location_id' => $center->id]);
 
         Subscription::create(['utility_type' => 'electricity', 'subscriber_number' => 'ELK-100-22', 'company' => 'Elektrik AS', 'due_date' => now()->addDays(6), 'bill_amount' => 1250, 'payment_status' => 'unpaid', 'location_id' => $center->id]);
         Subscription::create(['utility_type' => 'water', 'subscriber_number' => 'SU-884-10', 'company' => 'Su Idaresi', 'due_date' => now()->addDays(12), 'bill_amount' => 860, 'payment_status' => 'unpaid', 'location_id' => $sea->id]);
 
-        MaintenanceLog::create(['room_id' => $rooms[2]->id, 'type' => 'cleaning', 'status' => 'open', 'title' => 'Cikis sonrasi temizlik']);
+        MaintenanceLog::create(['room_id' => $rooms[2]->id, 'type' => 'cleaning', 'status' => 'open', 'title' => 'Çıkış sonrası temizlik']);
     }
 }
